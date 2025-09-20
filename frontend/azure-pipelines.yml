@@ -64,6 +64,7 @@ steps:
 - task: SonarQubeQualityGateCheck@1
   inputs:
     SonarQube: 'sonarqube'
+    ProjectKey: '$(sonarProjectKey)'
     sonarToken: '$(sonarToken)'            # 👈 MUST be the same as in SonarQubePrepare
     pollingTimeoutSec: '300'
   displayName: 'SonarQube: Check Quality Gate'
