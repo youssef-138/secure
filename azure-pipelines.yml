@@ -34,7 +34,7 @@ steps:
   # SonarQube can pick it up. You might need to configure the path in extraProperties.
 
 # 5. PREPARE SONARQUBE ANALYSIS CONFIGURATION
-- task: SonarQubePrepare@5
+- task: SonarQubePrepare@7
   displayName: 'SonarQube: Prepare Analysis'
   inputs:
     SonarQube: 'sonarqube' # Name of your Azure DevOps service connection
@@ -53,12 +53,12 @@ steps:
       # sonar.testExecutionReportPaths=test-report.xml
 
 # 6. RUN THE SONARQUBE ANALYSIS
-- task: SonarQubeAnalyze@5
+- task: SonarQubeAnalyze@7
   displayName: 'SonarQube: Run Analysis'
   # This task executes the sonar-scanner, which collects data and sends it to the server.
 
 # 7. PUBLISH THE ANALYSIS RESULTS TO SONARQUBE SERVER
-- task: SonarQubePublish@5
+- task: SonarQubePublish@7
   displayName: 'SonarQube: Publish Results'
   # This task finalizes the analysis and triggers processing on the SonarQube server.
   # The Quality Gate is calculated after this step.
