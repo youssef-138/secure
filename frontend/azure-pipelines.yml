@@ -41,6 +41,7 @@ steps:
       sonar.host.url=http://localhost:9000
       # Tells SonarQube this is a JavaScript/TypeScript project
       sonar.language=js
+      sonar.branch.name=
       # (Optional) If you want to exclude files like node_modules
       sonar.exclusions=**/node_modules/**, **/coverage/**, **/dist/**
       sonar.scanner.mode=Java
