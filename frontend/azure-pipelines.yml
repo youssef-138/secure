@@ -26,29 +26,23 @@ steps:
   # Using 'npm ci' for clean, reproducible installs in CI environments
 
 
-# 5. PREPARE SONARQUBE ANALYSIS CONFIGURATION
 - task: SonarQubePrepare@7
   displayName: 'SonarQube: Prepare Analysis'
   inputs:
-    SonarQube: 'sonarqube' # Name of your Azure DevOps service connection
-    scannerMode: 'cli'       # Use the standalone sonar-scanner
-    configMode: 'manual'     # We will provide all config manually
+    SonarQube: 'sonarqube'
+    scannerMode: 'cli'  # Note: Sometimes it's 'CLI' instead of 'cli' in v5
+    configMode: 'manual'
     cliProjectKey: '$(sonarProjectKey)'
-    cliprojectName: '$(sonarProjectName)'
-    # EXTRA PROPERTIES ARE CRUCIAL FOR SELF-HOSTED SETUP
+    cliProjectName: '$(sonarProjectName)'
+    cliSources: 'frontend'
     extraProperties: |
-      # Points the scanner to your local SonarQube server
       sonar.host.url=http://localhost:9000
-      # Tells SonarQube this is a JavaScript/TypeScript project
       sonar.language=js
-      sonar.branch.name=
-      cliSources=/home/youssef/secure/3tier-nodejs/frontend
-      # (Optional) If you want to exclude files like node_modules
+      sonar.sources=.
       sonar.exclusions=**/node_modules/**, **/coverage/**, **/dist/**
-      sonar.scanner.mode=Java
-      # (Optional) If your tests generate a coverage report, specify the path here.
-      # sonar.javascript.lcov.reportPaths=coverage/lcov.info
-      # sonar.testExecutionReportPaths=test-report.xml
+      # Still include these to be safe
+      sonar.branch.name=
+      sonar.branch.target=
 
 # 6. RUN THE SONARQUBE ANALYSIS
 - task: SonarQubeAnalyze@7
