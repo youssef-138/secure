@@ -42,6 +42,7 @@ steps:
       # Tells SonarQube this is a JavaScript/TypeScript project
       sonar.language=js
       sonar.branch.name=
+      cliSources=/home/youssef/secure/3tier-nodejs/frontend
       # (Optional) If you want to exclude files like node_modules
       sonar.exclusions=**/node_modules/**, **/coverage/**, **/dist/**
       sonar.scanner.mode=Java
