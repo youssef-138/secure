@@ -31,6 +31,7 @@ steps:
   displayName: 'SonarQube: Prepare Analysis'
   inputs:
     SonarQube: 'sonarqube' # Name of your Azure DevOps service connection
+    scannerMode: 'Java'
     projectKey: '$(sonarProjectKey)'
     projectName: '$(sonarProjectName)'
     # EXTRA PROPERTIES ARE CRUCIAL FOR SELF-HOSTED SETUP
