@@ -43,6 +43,9 @@ steps:
       # Still include these to be safe
       sonar.branch.name=
       sonar.branch.target=
+- powershell: |
+    $params = "$env:SONARQUBE_SCANNER_PARAMS" -replace '"sonar.branch.name":"[\w,/,-]*"\,?'
+    Write-Host "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$params"
 
 # 6. RUN THE SONARQUBE ANALYSIS
 - task: SonarQubeAnalyze@7
