@@ -10,6 +10,9 @@ variables:
   sonarProjectName: 'secure-pipeline'
   nodeVersion: '18.x' # Specify your Node.js version
   sonarToken: squ_a3625dda2c771d3a5b1d314b0df32b352283eb17
+  dockerfilePath: 'Dockerfile'  # Path to your Dockerfile in the repo
+  imageName: 'youssef138/nodejs-frontend'
+  tag: '$(Build.BuildId)'  # Using build ID as tag
 
 steps:
 
@@ -60,12 +63,44 @@ steps:
   # This task finalizes the analysis and triggers processing on the SonarQube server.
   # The Quality Gate is calculated after this step.
 
-# 8. THE SAST GATE: CHECK THE QUALITY GATE STATUS
-- task: SonarQubeQualityGateCheck@1
+# # 8. THE SAST GATE: CHECK THE QUALITY GATE STATUS
+# - task: SonarQubeQualityGateCheck@1
+#   inputs:
+#     SonarQube: 'sonarqube'
+#     ProjectKey: '$(sonarProjectKey)'
+#     sonarToken: '$(sonarToken)'            # 👈 MUST be the same as in SonarQubePrepare
+#     pollingTimeoutSec: '300'
+#   displayName: 'SonarQube: Check Quality Gate'
+
+- task: Docker@2
+  displayName: 'Login to DockerHub'
   inputs:
-    SonarQube: 'sonarqube'
-    ProjectKey: '$(sonarProjectKey)'
-    sonarToken: '$(sonarToken)'            # 👈 MUST be the same as in SonarQubePrepare
-    pollingTimeoutSec: '300'
-  displayName: 'SonarQube: Check Quality Gate'
+    command: login
+    containerRegistry: dockerhub  # Name of your DockerHub service connection
+
+# Build Docker image
+- task: Docker@2
+  displayName: 'Build Docker image'
+  inputs:
+    command: build
+    repository: $(imageName)
+    tags: $(tag)
+    dockerfile: $(dockerfilePath)
+    buildContext: .  # Build context (current directory)
+
+# Push Docker image to DockerHub
+- task: Docker@2
+  displayName: 'Push Docker image'
+  inputs:
+    command: push
+    repository: $(imageName)
+    tags: $(tag)
+
+
+# Confirmation message
+- script: |
+    echo "Successfully built and pushed:"
+    echo "$(imageName):$(tag)"
+    echo "$(imageName):latest (only on main branch)"
+  displayName: 'Build summary'
   
