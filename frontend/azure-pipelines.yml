@@ -30,27 +30,26 @@ steps:
   displayName: 'SonarQube: Prepare Analysis'
   inputs:
     SonarQube: 'sonarqube'
-    scannerMode: 'cli'  # Note: Sometimes it's 'CLI' instead of 'cli' in v5
+    scannerMode: 'cli'  # Note: 
     configMode: 'manual'
     cliProjectKey: '$(sonarProjectKey)'
     cliProjectName: '$(sonarProjectName)'
     cliSources: '/home/youssef/secure/3tier-nodejs/frontend'
     extraProperties: |
       sonar.host.url=http://localhost:9000
-      sonar.language=js
-      sonar.sources=.
       sonar.exclusions=**/node_modules/**, **/coverage/**, **/dist/**
-      # Still include these to be safe
-      sonar.branch.name=
-      sonar.branch.target=
-- powershell: |
-    $params = "$env:SONARQUBE_SCANNER_PARAMS" -replace '"sonar.branch.name":"[\w,/,-]*"\,?'
-    Write-Host "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$params"
+
+- script: |
+    echo "Sanitizing SONARQUBE_SCANNER_PARAMS..."
+    export SONARQUBE_SCANNER_PARAMS=$(echo "$SONARQUBE_SCANNER_PARAMS" | sed 's/"sonar.branch.name":"[^"]*",\?//g')
+    echo "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$SONARQUBE_SCANNER_PARAMS"
+  displayName: 'Remove sonar.branch.name for Community Edition'
 
 # 6. RUN THE SONARQUBE ANALYSIS
 - task: SonarQubeAnalyze@7
   inputs:
     jdkversion: 'JAVA_HOME_17_X64'
+  displayName: 'RUN THE SONARQUBE ANALYSIS'
 
 # 7. PUBLISH THE ANALYSIS RESULTS TO SONARQUBE SERVER
 - task: SonarQubePublish@7
@@ -62,7 +61,4 @@ steps:
 - task: SonarQubeQualityGateCheck@1
   displayName: 'SonarQube: Check Quality Gate'
   inputs:
-    # Wait for SonarQube server to process the results and compute the gate
-    pollingTimeoutSec: '300' # Wait up to 5 minutes
-    # This task will FAIL THE BUILD if the Quality Gate fails.
-    # This is your SAST gate in action.
+    pollingTimeoutSec: '300'
