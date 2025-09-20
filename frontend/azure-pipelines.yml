@@ -9,6 +9,7 @@ variables:
   sonarProjectKey: 'secure-pipeline'  # Must be unique in your SonarQube instance
   sonarProjectName: 'secure-pipeline'
   nodeVersion: '18.x' # Specify your Node.js version
+  sonarToken: squ_a3625dda2c771d3a5b1d314b0df32b352283eb17
 
 steps:
 
@@ -62,7 +63,8 @@ steps:
 # 8. THE SAST GATE: CHECK THE QUALITY GATE STATUS
 - task: SonarQubeQualityGateCheck@1
   inputs:
-    SonarQube: 'sonarqube'            # 👈 MUST be the same as in SonarQubePrepare
+    SonarQube: 'sonarqube'
+    sonarToken: '$(sonarToken)'            # 👈 MUST be the same as in SonarQubePrepare
     pollingTimeoutSec: '300'
   displayName: 'SonarQube: Check Quality Gate'
   
