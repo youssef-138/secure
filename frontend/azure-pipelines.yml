@@ -20,8 +20,8 @@ steps:
 
 # 3. INSTALL PROJECT DEPENDENCIES
 - script: |
-    npm ci
-  displayName: 'npm ci'
+    npm install
+  displayName: 'npm install'
   # Using 'npm ci' for clean, reproducible installs in CI environments
 
 # 4. (Optional) RUN TESTS - Highly Recommended for SonarQube
