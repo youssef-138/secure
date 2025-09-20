@@ -31,6 +31,8 @@ steps:
   displayName: 'SonarQube: Prepare Analysis'
   inputs:
     SonarQube: 'sonarqube' # Name of your Azure DevOps service connection
+    scannerMode: 'cli'       # Use the standalone sonar-scanner
+    configMode: 'manual'     # We will provide all config manually
     projectKey: '$(sonarProjectKey)'
     projectName: '$(sonarProjectName)'
     # EXTRA PROPERTIES ARE CRUCIAL FOR SELF-HOSTED SETUP
