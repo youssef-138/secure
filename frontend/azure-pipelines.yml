@@ -34,7 +34,7 @@ steps:
     configMode: 'manual'
     cliProjectKey: '$(sonarProjectKey)'
     cliProjectName: '$(sonarProjectName)'
-    cliSources: 'frontend'
+    cliSources: '/home/youssef/secure/3tier-nodejs/frontend'
     extraProperties: |
       sonar.host.url=http://localhost:9000
       sonar.language=js
@@ -46,8 +46,8 @@ steps:
 
 # 6. RUN THE SONARQUBE ANALYSIS
 - task: SonarQubeAnalyze@7
-  displayName: 'SonarQube: Run Analysis'
-  # This task executes the sonar-scanner, which collects data and sends it to the server.
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
 
 # 7. PUBLISH THE ANALYSIS RESULTS TO SONARQUBE SERVER
 - task: SonarQubePublish@7
