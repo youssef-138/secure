@@ -31,7 +31,6 @@ steps:
   displayName: 'SonarQube: Prepare Analysis'
   inputs:
     SonarQube: 'sonarqube' # Name of your Azure DevOps service connection
-    scannerMode: 'Java'
     projectKey: '$(sonarProjectKey)'
     projectName: '$(sonarProjectName)'
     # EXTRA PROPERTIES ARE CRUCIAL FOR SELF-HOSTED SETUP
@@ -42,6 +41,7 @@ steps:
       sonar.language=js
       # (Optional) If you want to exclude files like node_modules
       sonar.exclusions=**/node_modules/**, **/coverage/**, **/dist/**
+      sonar.scanner.mode=Java
       # (Optional) If your tests generate a coverage report, specify the path here.
       # sonar.javascript.lcov.reportPaths=coverage/lcov.info
       # sonar.testExecutionReportPaths=test-report.xml
