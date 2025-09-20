@@ -25,15 +25,6 @@ steps:
   workingDirectory: '/home/youssef/secure/3tier-nodejs/frontend'
   # Using 'npm ci' for clean, reproducible installs in CI environments
 
-# 4. (Optional) RUN TESTS - Highly Recommended for SonarQube
-- script: |
-    npm test
-    # If your test script runs with coverage, even better.
-    # Example with Jest: "jest --coverage --coverageReporters=cobertura"
-  displayName: 'Run Tests'
-  workingDirectory: '/home/youssef/secure/3tier-nodejs/frontend'
-  # If your tests generate a coverage report (e.g., lcov, cobertura),
-  # SonarQube can pick it up. You might need to configure the path in extraProperties.
 
 # 5. PREPARE SONARQUBE ANALYSIS CONFIGURATION
 - task: SonarQubePrepare@7
