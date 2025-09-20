@@ -61,5 +61,8 @@ steps:
 
 # 8. THE SAST GATE: CHECK THE QUALITY GATE STATUS
 - task: SonarQubeQualityGateCheck@1
+  inputs:
+    SonarQube: 'sonarqube'            # 👈 MUST be the same as in SonarQubePrepare
+    pollingTimeoutSec: '300'
   displayName: 'SonarQube: Check Quality Gate'
   
