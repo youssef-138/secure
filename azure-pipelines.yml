@@ -64,7 +64,7 @@ steps:
   # The Quality Gate is calculated after this step.
 
 # 8. THE SAST GATE: CHECK THE QUALITY GATE STATUS
-- task: SonarQubeQualityGateCheck@5
+- task: SonarQubeQualityGateCheck@1
   displayName: 'SonarQube: Check Quality Gate'
   inputs:
     # Wait for SonarQube server to process the results and compute the gate
