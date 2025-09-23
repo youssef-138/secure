@@ -89,7 +89,8 @@ steps:
 
 
 - script: |
-    docker build -t $(imageName):$(tag) /frontend/Dockerfile
+    cd frontend
+    docker build -t $(imageName):$(tag) .
   displayName: 'Build Docker image'
 
 
