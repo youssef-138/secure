@@ -89,6 +89,16 @@ steps:
 #     buildContext: .  # Build context (current directory)
 
 - script: |
+    echo "=== Current Directory Structure ==="
+    pwd
+    ls -la
+    echo "=== Searching for Dockerfile ==="
+    find . -name "Dockerfile" -type f
+    echo "=== Searching for package.json ==="
+    find . -name "package.json" -type f
+  displayName: 'Discover project structure'
+
+- script: |
     docker build -t $(imageName):$(tag) $(dockerfilePath)
   displayName: 'Build Docker image'
 
