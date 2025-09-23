@@ -89,7 +89,7 @@ steps:
 #     buildContext: .  # Build context (current directory)
 
 - script: |
-    docker build -t $(imageName):$(tag) .
+    docker build -t $(imageName):$(tag) $(dockerfilePath)
   displayName: 'Build Docker image'
 
 
