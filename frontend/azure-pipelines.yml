@@ -16,52 +16,51 @@ variables:
 
 steps:
 
-# 2. SET UP NODE.JS
-- task: NodeTool@0
-  inputs:
-    versionSpec: '$(nodeVersion)'
-  displayName: 'Install Node.js'
+# # 2. SET UP NODE.JS
+# - task: NodeTool@0
+#   inputs:
+#     versionSpec: '$(nodeVersion)'
+#   displayName: 'Install Node.js'
 
-# 3. INSTALL PROJECT DEPENDENCIES
-- script: |
-    npm install
-  displayName: 'npm install'
-  workingDirectory: 'frontend'
-  # Using 'npm ci' for clean, reproducible installs in CI environments
+# # 3. INSTALL PROJECT DEPENDENCIES
+# - script: |
+#     npm install
+#   displayName: 'npm install'
+#   workingDirectory: 'frontend'
+#   # Using 'npm ci' for clean, reproducible installs in CI environments
 
 
-- task: SonarQubePrepare@7
-  displayName: 'SonarQube: Prepare Analysis'
-  inputs:
-    SonarQube: 'sonarqube'
-    scannerMode: 'cli'  # Note: 
-    configMode: 'manual'
-    cliProjectKey: '$(sonarProjectKey)'
-    cliProjectName: '$(sonarProjectName)'
-    cliSources: 'frontend'
-    extraProperties: |
-      sonar.host.url=http://localhost:9000
-      sonar.exclusions=**/node_modules/**, **/coverage/**, **/dist/**
+# - task: SonarQubePrepare@7
+#   displayName: 'SonarQube: Prepare Analysis'
+#   inputs:
+#     SonarQube: 'sonarqube'
+#     scannerMode: 'cli'  # Note: 
+#     configMode: 'manual'
+#     cliProjectKey: '$(sonarProjectKey)'
+#     cliProjectName: '$(sonarProjectName)'
+#     cliSources: 'frontend'
+#     extraProperties: |
+#       sonar.host.url=http://localhost:9000
+#       sonar.exclusions=**/node_modules/**, **/coverage/**, **/dist/**
 
-- script: |
-    echo "Sanitizing SONARQUBE_SCANNER_PARAMS..."
-    export SONARQUBE_SCANNER_PARAMS=$(echo "$SONARQUBE_SCANNER_PARAMS" | sed 's/"sonar.branch.name":"[^"]*",\?//g')
-    echo "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$SONARQUBE_SCANNER_PARAMS"
-  displayName: 'Remove sonar.branch.name for Community Edition'
+# - script: |
+#     echo "Sanitizing SONARQUBE_SCANNER_PARAMS..."
+#     export SONARQUBE_SCANNER_PARAMS=$(echo "$SONARQUBE_SCANNER_PARAMS" | sed 's/"sonar.branch.name":"[^"]*",\?//g')
+#     echo "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$SONARQUBE_SCANNER_PARAMS"
+#   displayName: 'Remove sonar.branch.name for Community Edition'
 
-# 6. RUN THE SONARQUBE ANALYSIS
-- task: SonarQubeAnalyze@7
-  inputs:
-    jdkversion: 'JAVA_HOME_17_X64'
-  displayName: 'RUN THE SONARQUBE ANALYSIS'
+# # 6. RUN THE SONARQUBE ANALYSIS
+# - task: SonarQubeAnalyze@7
+#   inputs:
+#     jdkversion: 'JAVA_HOME_17_X64'
+#   displayName: 'RUN THE SONARQUBE ANALYSIS'
 
-# 7. PUBLISH THE ANALYSIS RESULTS TO SONARQUBE SERVER
-- task: SonarQubePublish@7
-  inputs:
-    pollingTimeoutSec: '300'
-  displayName: 'SonarQube: Publish Results'
-  # This task finalizes the analysis and triggers processing on the SonarQube server.
-  # The Quality Gate is calculated after this step.
+# # 7. PUBLISH THE ANALYSIS RESULTS TO SONARQUBE SERVER
+# - task: SonarQubePublish@7
+#   inputs:
+#     pollingTimeoutSec: '300'
+#   displayName: 'SonarQube: Publish Results'
+ 
 
 # # 8. THE SAST GATE: CHECK THE QUALITY GATE STATUS
 # - task: SonarQubeQualityGateCheck@1
@@ -88,18 +87,9 @@ steps:
 #     dockerfile: $(dockerfilePath)
 #     buildContext: .  # Build context (current directory)
 
-- script: |
-    echo "=== Current Directory Structure ==="
-    pwd
-    ls -la
-    echo "=== Searching for Dockerfile ==="
-    find . -name "Dockerfile" -type f
-    echo "=== Searching for package.json ==="
-    find . -name "package.json" -type f
-  displayName: 'Discover project structure'
 
 - script: |
-    docker build -t $(imageName):$(tag) $(dockerfilePath)
+    docker build -t $(imageName):$(tag) /frontend/Dockerfile
   displayName: 'Build Docker image'
 
 
