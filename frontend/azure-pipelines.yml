@@ -1,5 +1,5 @@
-trigger:
-- main  # Triggers the pipeline on pushes to the main branch
+# trigger:
+# - main  # Triggers the pipeline on pushes to the main branch
 
 # 1. USE THE SELF-HOSTED AGENT POOL
 pool:
@@ -67,7 +67,7 @@ steps:
 #   inputs:
 #     SonarQube: 'sonarqube'
 #     ProjectKey: '$(sonarProjectKey)'
-#     sonarToken: '$(sonarToken)'            # 👈 MUST be the same as in SonarQubePrepare
+#     sonarToken: 'sonarToken'            # 👈 MUST be the same as in SonarQubePrepare
 #     pollingTimeoutSec: '300'
 #   displayName: 'SonarQube: Check Quality Gate'
 
