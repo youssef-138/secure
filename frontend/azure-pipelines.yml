@@ -10,7 +10,8 @@ variables:
   sonarProjectName: 'secure-pipeline'
   nodeVersion: '18.x' # Specify your Node.js version
   sonarToken: squ_a3625dda2c771d3a5b1d314b0df32b352283eb17
-  dockerfilePath: 'frontend'  # Path to your Dockerfile in the repo
+  dockerfileDirectory: 'frontend'
+  dockerfilePath: 'frontend/Dockerfile'  # Path to your Dockerfile in the repo
   imageName: 'youssef138/nodejs-frontend'
   tag: '$(Build.BuildId)'  # Using build ID as tag
 
@@ -84,7 +85,7 @@ steps:
     repository: $(imageName)
     tags: $(tag)
     dockerfile: $(dockerfilePath)
-    buildContext: '.' 
+    buildContext: $(dockerfileDirectory) 
 
 
 # - script: |
