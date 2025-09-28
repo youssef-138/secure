@@ -1,5 +1,5 @@
-# trigger:
-# - main  # Triggers the pipeline on pushes to the main branch
+trigger:
+- main  # Triggers the pipeline on pushes to the main branch
 
 # 1. USE THE SELF-HOSTED AGENT POOL
 pool:
@@ -10,7 +10,7 @@ variables:
   sonarProjectName: 'secure-pipeline'
   nodeVersion: '18.x' # Specify your Node.js version
   sonarToken: squ_a3625dda2c771d3a5b1d314b0df32b352283eb17
-  dockerfilePath: 'frontend/Dockerfile'  # Path to your Dockerfile in the repo
+  dockerfilePath: 'frontend'  # Path to your Dockerfile in the repo
   imageName: 'youssef138/nodejs-frontend'
   tag: '$(Build.BuildId)'  # Using build ID as tag
 
@@ -77,21 +77,21 @@ steps:
     command: login
     containerRegistry: dockerhub  # Name of your DockerHub service connection
 
-# Build Docker image
-# - task: Docker@2
-#   displayName: 'Build Docker image'
-#   inputs:
-#     command: build
-#     repository: $(imageName)
-#     tags: $(tag)
-#     dockerfile: $(dockerfilePath)
-#     buildContext: .  # Build context (current directory)
-
-
-- script: |
-    cd frontend
-    docker build -t $(imageName):$(tag) .
+Build Docker image
+- task: Docker@2
   displayName: 'Build Docker image'
+  inputs:
+    command: build
+    repository: $(imageName)
+    tags: $(tag)
+    dockerfile: $(dockerfilePath)
+    buildContext: .  # Build context (current directory)
+
+
+# - script: |
+#     cd frontend
+#     docker build -t $(imageName):$(tag) .
+#   displayName: 'Build Docker image'
 
 
 
