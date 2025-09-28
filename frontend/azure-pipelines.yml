@@ -77,7 +77,6 @@ steps:
     command: login
     containerRegistry: dockerhub  # Name of your DockerHub service connection
 
-Build Docker image
 - task: Docker@2
   displayName: 'Build Docker image'
   inputs:
@@ -85,7 +84,7 @@ Build Docker image
     repository: $(imageName)
     tags: $(tag)
     dockerfile: $(dockerfilePath)
-    buildContext: .  # Build context (current directory)
+    buildContext: '.' 
 
 
 # - script: |
